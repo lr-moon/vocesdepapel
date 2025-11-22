@@ -1,6 +1,6 @@
 <?php
 
-include 'conexion.php';
+include ('../controlador/conexion.php');
 
 //Metodos para  insertar el nuevo libro. 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

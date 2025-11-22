@@ -1,5 +1,5 @@
 <?php
-include 'conexion.php';
+include ('../controlador/conexion.php');
 
 //Solo se podran editar la descripcion y la imagen del libro 
 
