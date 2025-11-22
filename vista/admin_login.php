@@ -1,8 +1,23 @@
 <?php
 // Seleccionar todos los libros para que el administrador pueda buscarlos
 include ('../controlador/conexion.php');
-$sql = "SELECT * FROM libro";
+$sql = "SELECT
+    libro.*,
+    genero.nombre_genero
+FROM
+    libro
+JOIN libro_genero ON libro.id_libro = libro_genero.id_libro
+JOIN genero ON genero.id_genero = libro_genero.id_genero
+ORDER BY
+    genero.id_genero ASC;
+";
 $result = $conn->query($sql);
+$libros = [];
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $libros[] = $row;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -14,47 +29,104 @@ $result = $conn->query($sql);
 </head>
 <body>
 
-    <div id="screen-admin">
+    <div id="pantalla-admin">
         
-        <img src="images/admin.jpg" alt="Fondo Administración" class="bg-image">
-        <div class="overlay"></div>
+        <img src="images/admin.jpg" alt="Fondo Administración" class="imagen-fondo">
+        <div class="fondo-oscuro"></div>
 
-        <div class="content-wrapper">
+        <div class="contenedor-principal">
             
-            <div class="icon-large">
+            <div class="icono-grande">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18 2H6C4.9 2 4 2.9 4 4V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V4C20 2.9 19.1 2 18 2ZM6 4H11V9L8.5 7.5L6 9V4ZM18 20H6V11H18V20Z"/>
                 </svg>
             </div>
             
             <h1>Administración</h1>
-            <p class="subtitle">Gestiona el catálogo y los recursos de la biblioteca.</p>
+            <p class="subtitulo">Gestiona el catálogo y los recursos de la biblioteca.</p>
             
-            <div class="admin-actions">
-                
-                <!-- Buscador -->
-                <form class="search-bar-container" method="GET" action="">
-                    <input type="text" name="q" class="search-input" placeholder="Buscar libro por título, autor o ID...">
-                    <button type="submit" class="search-btn">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-                    </button>
-                </form>
-
+            <div class="acciones-admin">
                 <!-- Botón Agregar Libro -->
-                <a href="agregar.html" class="btn-add-book">
+                <a href="agregar.html" class="boton-agregar-libro">
                     <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                     Agregar Nuevo Libro
                 </a>
-
             </div>
 
-            <a href="index.html" class="btn-logout">
+            <a href="index.html" class="boton-cerrar-sesion">
                 <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
                 Cerrar Sesión
             </a>
 
+            <!-- Cuadrícula de libros -->
+            <div class="cuadricula">
+                <?php
+                for ($i = 0; $i < count($libros); $i++) {
+                    $libro = $libros[$i];
+                    $parametros_editar = "id_libro=" . $libro['id_libro'] . 
+                                        "&titulo=" . $libro['titulo'] . 
+                                        "&autor=" . $libro['autor'] . 
+                                        "&descripcion=" . $libro['descripcion'] . 
+                                        "&ruta_imagen=" . $libro['ruta_imagen'] . 
+                                        "&genero=" . $libro['nombre_genero'];
+                    
+                    echo "<div class='tarjeta' 
+                            data-titulo='" . $libro['titulo'] . "' 
+                            data-autor='" . $libro['autor'] . "' 
+                            data-genero='" . $libro['nombre_genero'] . "' 
+                            data-descripcion='" . $libro['descripcion'] . "' 
+                            data-imagen='" . $libro['ruta_imagen'] . "'>";
+                    echo "<div class='icono-tarjeta'>";
+                    echo "<img src='" . $libro['ruta_imagen'] . "' alt='" . $libro['titulo'] . "'>";
+                    echo "</div>";
+                    echo "<h2>" . $libro['titulo'] . "</h2>";
+                    echo "<div class='botones-accion'>";
+                    echo "<a href='editar.php?" . $parametros_editar . "' class='boton-editar'>Editar</a>";
+                    echo "<a href='../modelo/eliminar_libro.php?id=" . $libro['id_libro'] . "' class='boton-eliminar' onclick='return confirm(\"¿Estás seguro de que deseas eliminar este libro?\");'>Eliminar</a>";
+                    echo "</div>";
+                    echo "</div>";
+                }
+                ?>
+            </div>
+
         </div>
     </div>
 
+    <?php include 'modal.php'; ?>
+    
+    <!-- JavaScript para abrir el modal -->
+    <script>
+        function abrirModalDesdeCard(elemento) {
+            const titulo = elemento.getAttribute('data-titulo');
+            const autor = elemento.getAttribute('data-autor');
+            const genero = elemento.getAttribute('data-genero');
+            const descripcion = elemento.getAttribute('data-descripcion');
+            const imagen = elemento.getAttribute('data-imagen');
+            
+            abrirModal(titulo, autor, genero, descripcion, imagen);
+        }
+        
+        // Asignar eventos a todas las tarjetas
+        document.addEventListener('DOMContentLoaded', function() {
+            const tarjetas = document.querySelectorAll('.tarjeta');
+            tarjetas.forEach(function(tarjeta) {
+                // Solo abrir modal al hacer click en la imagen o título, no en los botones
+                const icono = tarjeta.querySelector('.icono-tarjeta');
+                const titulo = tarjeta.querySelector('h2');
+                
+                if (icono) {
+                    icono.addEventListener('click', function() {
+                        abrirModalDesdeCard(tarjeta);
+                    });
+                }
+                
+                if (titulo) {
+                    titulo.addEventListener('click', function() {
+                        abrirModalDesdeCard(tarjeta);
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
