@@ -1,0 +1,191 @@
+body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* --- FONDO DE HOJAS (Estilo Fijo) --- */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        /* --- CAPA OSCURA (Overlay) --- */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3); /* Oscuridad perfecta (30%) */
+            z-index: -1;
+        }
+
+        /* --- HEADER SUPERIOR --- */
+        header {
+            background-color: transparent;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Centrado verticalmente respecto al grupo de botones */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- CONTENEDOR DE BOTONES (Para apilarlos) --- */
+        .header-buttons {
+            display: flex;
+            flex-direction: column; /* Uno debajo del otro */
+            align-items: flex-end; /* Alineados a la derecha */
+            gap: 8px; /* Espacio entre botones */
+        }
+
+        /* --- ESTILO COMÚN DE BOTONES (Vidrio) --- */
+        .btn-glass {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-glass:hover {
+            background-color: #e67e22;
+            border-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .btn-glass svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            fill: white;
+        }
+
+        /* Estilo específico más pequeño para Admin si lo prefieres, 
+           o lo dejamos igual para consistencia. Aquí lo dejo igual. */
+        .btn-admin {
+            font-size: 0.9rem; /* Un pelín más pequeño para diferenciar */
+            padding: 6px 14px;
+            opacity: 0.9;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto 60px;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .page-intro {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-intro h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .page-intro p {
+            color: #f1f1f1;
+            font-size: 1.1rem;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* --- GRID (REJILLA) --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- TARJETA (Estilo Glassmorphism) --- */
+        .card {
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease, background-color 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .card:hover .card-icon {
+            background-color: #e67e22;
+            transform: scale(1.1);
+        }
+
+        .card-icon svg {
+            width: 35px;
+            height: 35px;
+            fill: white;
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #eee;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }

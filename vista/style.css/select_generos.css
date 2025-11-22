@@ -1,0 +1,117 @@
+        /* --- RESET Y BASE --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- FONDO DE HOJAS (Fijo) --- */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        /* --- CAPA OSCURA SUAVE (30%) --- */
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+
+        /* --- HEADER SUPERIOR --- */
+        header {
+            background-color: transparent;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- CONTENEDOR DE BOTONES (Derecha) --- */
+        .header-buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        /* --- ESTILO DE BOTONES (Vidrio) --- */
+        .btn-glass {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-glass:hover {
+            background-color: #e67e22;
+            border-color: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .btn-glass svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+            fill: white;
+        }
+
+        .btn-admin {
+            font-size: 0.9rem;
+            padding: 6px 14px;
+            opacity: 0.9;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL (SOLO TEXTO) --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center; /* Centrado horizontal */
+            align-items: flex-start; /* Alineado arriba */
+            padding-top: 100px; /* Espacio desde arriba */
+        }
+
+        .welcome-text h1 {
+            font-size: 3.5rem;
+            color: white;
+            text-align: center;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.6);
+            font-weight: 700;
+            margin: 0;
+        }
