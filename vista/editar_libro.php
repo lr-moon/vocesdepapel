@@ -40,7 +40,7 @@ $ruta_imagen = isset($_GET['ruta_imagen']) ? $_GET['ruta_imagen'] : '';
             <h2 class="form-title">Editar Información</h2>
             
             <!-- El formulario envía los datos a un archivo PHP que procese la actualización -->
-            <form action="../modelo/actualizar_libro.php" method="POST">
+            <form action="../modelo/editar_libro.php" method="POST">
                 
                 <!-- ID Oculto (Necesario para saber qué libro actualizar) -->
                 <input type="hidden" name="id_libro" value="<?php echo htmlspecialchars($id_libro); ?>">
@@ -77,17 +77,42 @@ $ruta_imagen = isset($_GET['ruta_imagen']) ? $_GET['ruta_imagen'] : '';
                 <div class="form-group">
                     <label class="form-label" style="color: #e67e22;">Ruta de Imagen (Editable)</label>
                     <input type="text" class="form-input" name="ruta_imagen" 
-                           value="<?php echo htmlspecialchars($ruta_imagen); ?>" required>
+                           value="<?php echo htmlspecialchars($ruta_imagen); ?>" oninput="mostrarVistaPrevia(this.value)" required>
+                    <div id="vista-previa-container" style="margin-top: 10px; display: none; text-align: center;">
+                        <p style="font-size: 14px; margin-bottom: 5px;">Vista previa:</p>
+                        <img id="vista-previa" src="" alt="Vista previa de la imagen" style="max-width: 200px; max-height: 300px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
                 </div>
 
-                <!-- Botón Guardar (ENLACE CON ESTILO DE BOTÓN) -->
-                <a href="admin_login.php" class="btn-submit">
+                <button type="submit" class="btn-submit">
                     <i class="fas fa-save" style="margin-right: 8px;"></i> Guardar Cambios
-                </a> 
+                </button>
 
             </form>
         </div>
     </div>
-
+<script>
+function mostrarVistaPrevia(ruta) {
+    const vistaPrevia = document.getElementById('vista-previa');
+    const container = document.getElementById('vista-previa-container');
+    
+    if (ruta.trim() !== '') {
+        vistaPrevia.src = ruta;
+        container.style.display = 'block';
+        
+        // Verificar si la imagen carga correctamente
+        vistaPrevia.onload = function() {
+            console.log('Imagen cargada correctamente');
+        };
+        
+        vistaPrevia.onerror = function() {
+            vistaPrevia.alt = 'Imagen no encontrada';
+            console.log('Error al cargar la imagen');
+        };
+    } else {
+        container.style.display = 'none';
+    }
+}
+</script>
 </body>
 </html>

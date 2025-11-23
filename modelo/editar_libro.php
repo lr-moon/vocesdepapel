@@ -17,8 +17,11 @@ $stmt = $conn->prepare($query);
 $stmt->bind_param("ssi", $descripcion, $ruta_imagen, $id_libro);
 
 if (!$stmt->execute()) { //Si no se inserta el libro
-    echo "Error al editar el libro: " . $stmt->error;
+    echo "<script>alert('Error al editar el libro: " . $stmt->error . "'); window.location.href='../vista/admin_login.php';</script>";
 } 
 
 $stmt->close();
 $conn->close();
+
+echo "<script>alert('Libro editado correctamente'); window.location.href='../vista/admin_login.php';</script>";
+?>

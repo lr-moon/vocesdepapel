@@ -1,9 +1,8 @@
 <?php
 // Seleccionar todos los libros para que el administrador pueda buscarlos
 include ('../controlador/conexion.php');
-$sql = "SELECT
-    libro.*,
-    genero.nombre_genero
+$sql = "SELECT DISTINCT
+    libro.*
 FROM
     libro
 JOIN libro_genero ON libro.id_libro = libro_genero.id_libro
@@ -59,6 +58,7 @@ if ($result->num_rows > 0) {
             <!-- Cuadrícula de libros -->
             <div class="cuadricula">
                 <?php
+                $libro['nombre_genero'] = "";
                 for ($i = 0; $i < count($libros); $i++) {
                     $libro = $libros[$i];
                     $parametros_editar = "id_libro=" . $libro['id_libro'] . 
@@ -66,12 +66,12 @@ if ($result->num_rows > 0) {
                                         "&autor=" . $libro['autor'] . 
                                         "&descripcion=" . $libro['descripcion'] . 
                                         "&ruta_imagen=" . $libro['ruta_imagen'] . 
-                                        "&genero=" . $libro['nombre_genero'];
+                                        "&genero=" . $libro['nombre_genero'] = "";
                     
                     echo "<div class='tarjeta' 
                             data-titulo='" . $libro['titulo'] . "' 
                             data-autor='" . $libro['autor'] . "' 
-                            data-genero='" . $libro['nombre_genero'] . "' 
+                            data-genero='" . $libro['nombre_genero'] = "" . "' 
                             data-descripcion='" . $libro['descripcion'] . "' 
                             data-imagen='" . $libro['ruta_imagen'] . "'>";
                     echo "<div class='icono-tarjeta'>";
