@@ -1,0 +1,184 @@
+        /* --- RESET Y BASE --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- FONDO --- */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Fondo oscuro SIN blur para nitidez */
+            background-color: rgba(0, 0, 0, 0.6); 
+            z-index: -1;
+        }
+
+        /* --- HEADER --- */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* --- BOTONES --- */
+        .btn-glass {
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            padding: 8px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-size: 0.9rem;
+        }
+
+        .btn-glass:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* --- CONTENEDOR DEL FORMULARIO --- */
+        .main-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .form-container {
+            background: rgba(30, 30, 30, 0.6); 
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 40px 50px;
+            width: 100%;
+            max-width: 650px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .form-title {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* --- INPUTS Y LABELS --- */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        .form-input, 
+        .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+
+        /* ESTILO PARA CAMPOS DE SOLO LECTURA (NO EDITABLES) */
+        .form-input[readonly] {
+            background-color: rgba(0, 0, 0, 0.3); /* Fondo más oscuro */
+            color: #aaa; /* Texto más apagado */
+            border-color: rgba(255, 255, 255, 0.05);
+            cursor: not-allowed; /* Cursor de prohibido */
+        }
+
+        /* ESTILO PARA CAMPOS EDITABLES (FOCUS) */
+        .form-input:not([readonly]):focus, 
+        .form-textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #e67e22; /* Naranja al enfocar */
+            box-shadow: 0 0 10px rgba(230, 126, 34, 0.2);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* --- BOTÓN GUARDAR CAMBIOS --- */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 50px;
+            border: none;
+            /* CAMBIO: Color Naranja/Ocre igual que en 'Agregar' */
+            background-color: #d37234; 
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            /* CAMBIO: Propiedades Flex para que la etiqueta 'a' centre el contenido */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .btn-submit:hover {
+            background-color: #e67e22;
+            transform: scale(1.02);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 25px;
+            }
+        }
