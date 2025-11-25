@@ -60,13 +60,6 @@ $ruta_imagen = isset($_GET['ruta_imagen']) ? $_GET['ruta_imagen'] : '';
                 </div>
 
                 <!-- Género (SOLO LECTURA) -->
-                <div class="form-group">
-                    <label class="form-label">Género Principal (No editable)</label>
-                    <!-- Usamos input text en lugar de select para mostrarlo fijo -->
-                    <input type="text" class="form-input" name="genero" 
-                           value="<?php echo htmlspecialchars($genero); ?>" readonly>
-                </div>
-
                 <!-- Descripción (EDITABLE) -->
                 <div class="form-group">
                     <label class="form-label" style="color: #e67e22;">Descripción / Sinopsis (Editable)</label>

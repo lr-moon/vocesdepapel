@@ -194,3 +194,12 @@ INSERT INTO libro_genero (id_libro, id_genero, prioridad) VALUES
         }
         ?>
     </div>
+
+
+
+                    <div class="form-group">
+                    <label class="form-label">Género Principal (No editable)</label>
+                    <!-- Usamos input text en lugar de select para mostrarlo fijo -->
+                    <input type="text" class="form-input" name="genero" 
+                           value="<?php echo htmlspecialchars($genero); ?>" readonly>
+                </div>
