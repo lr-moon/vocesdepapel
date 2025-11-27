@@ -102,8 +102,6 @@ h1 {
     font-size: 1rem;
     border-radius: 50px;
     font-weight: bold;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    /* Se eliminó transition y transform */
     display: inline-flex; /* Alinea icono y texto en línea */
     align-items: center;
     border: none;
@@ -111,10 +109,6 @@ h1 {
     white-space: nowrap; /* Evita que el texto del botón se parta en dos líneas */
 }
 
-.boton-agregar-libro:hover {
-    background-color: #d35400;
-    /* Se eliminó transform scale */
-}
 
 .boton-agregar-libro svg {
     width: 20px;
@@ -125,11 +119,10 @@ h1 {
 
 /* BOTÓN CERRAR SESIÓN */
 .boton-cerrar-sesion {
-    margin-top: 10px;
+    margin-top: 3px;
     color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
     font-size: 0.9rem;
-    /* Se eliminó transition */
     display: flex;
     align-items: center;
     gap: 2px;
@@ -159,7 +152,6 @@ h1 {
 /* TARJETA */
 .tarjeta {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px); /* Efecto vidrio esmerilado */
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 15px;
@@ -167,17 +159,11 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* Se eliminó transition */
     height: 100%; /* Iguala la altura de todas las tarjetas en la fila */
     box-sizing: border-box;
 }
 
-.tarjeta:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: #e67e22;
-    /* Se eliminó transform translateY */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-}
+
 
 .icono-tarjeta {
     width: 100%;
@@ -231,21 +217,21 @@ h1 {
 }
 
 .boton-editar {
-    background-color: #3498db;
+    background-color: #187224;
     color: white;
 }
 
 .boton-editar:hover {
-    background-color: #2980b9;
+    background-color: #187224;
 }
 
 .boton-eliminar {
-    background-color: #e74c3c;
+    background-color: #f71e05;
     color: white;
 }
 
 .boton-eliminar:hover {
-    background-color: #c0392b;
+    background-color: #f71e05;
 }
 
 /* ESTILOS PARA LA MODAL */
