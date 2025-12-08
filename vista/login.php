@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </form>
 
-        <a href="generos.html" class="btn-back">← Volver a la Biblioteca</a>
+        <a href="generos.php" class="btn-back">← Volver a la Biblioteca</a>
     </div>
 
 </body>
