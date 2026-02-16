@@ -1,23 +1,48 @@
 <?php
-
-$USUARIO_CORRECTO = "admin";
-$PASSWORD = "1234";
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
+include('../controlador/conexion.php');
 
 // Inicializar la variable de error
 $error = "";
 
 // Procesar el formulario si se envió
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // No usamos trim() ni htmlspecialchars() para simplificar
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    // Sanitizar entradas
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
     
-    // Validar credenciales
-    if ($username === $USUARIO_CORRECTO && $password === $PASSWORD) {
-        // Redirigir al panel de administración  'admin_login.php'
+    echo "Usuario ingresado: " . $username . "<br>";
+    echo "Contraseña ingresada: " . $password . "<br>";
+    
+    // Consulta SQL para validar credenciales en la base de datos
+    $sqlverificando = "SELECT * FROM login WHERE usuario = '".$username."' AND contraseña = '".$password."'";
+    echo "Query: " . $sqlverificando . "<br>";
+    
+    $QueryResult = mysqli_query($conn, $sqlverificando);  // ← CAMBIÉ $conex por $conn
+    
+    if(!$QueryResult){
+        echo "Error en la consulta: " . mysqli_error($conn) . "<br>";  // ← CAMBIÉ $conex por $conn
+    }
+    
+    if($row = mysqli_fetch_assoc($QueryResult)){
+        echo "Usuario encontrado: <br>";
+        print_r($row);
+        
+        // Guardar datos en sesión
+        $_SESSION['nombre'] = $row['nombre'];
+        $_SESSION['usuario'] = $row['usuario'];
+        $_SESSION['correo'] = $row['correo'];
+        $_SESSION['id'] = $row['id'];
+        
+        echo "<br>Redirigiendo...";
+        // Redirigir al panel de administración
         header("Location: admin_login.php");
         exit();
     } else {
+        echo "No se encontró el usuario<br>";
+        echo "Número de filas: " . mysqli_num_rows($QueryResult);
         $error = "Usuario o contraseña incorrectos";
     }
 }

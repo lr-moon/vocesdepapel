@@ -29,7 +29,16 @@ CREATE TABLE libro_genero (
     CONSTRAINT chk_prioridad CHECK (prioridad BETWEEN 1 AND 3)
 );
 
--- Insertar datos de ejemplo
+-- Tabla login para usuarios del sistema
+CREATE TABLE login (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(50) NOT NULL,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    contraseña VARCHAR(50) NOT NULL,
+    correo VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Insertar géneros de ejemplo
 INSERT INTO genero (nombre_genero, descripcion) VALUES
 ('Ciencia Ficción', 'Libros sobre futuros imaginarios, tecnología avanzada y espacio'),
 ('Fantasía', 'Obras con elementos mágicos y mundos imaginarios'),
@@ -38,10 +47,11 @@ INSERT INTO genero (nombre_genero, descripcion) VALUES
 ('Terror', 'Obras diseñadas para causar miedo o suspense'),
 ('Biografía', 'Relatos de la vida de personas reales');
 
-INSERT INTO libro (titulo, autor, descripcion) VALUES
-('Fundación', 'Isaac Asimov', 'Saga sobre la caída de un imperio galáctico'),
-('El Hobbit', 'J.R.R. Tolkien', 'Aventura de Bilbo Bolsón en la Tierra Media'),
-('Orgullo y Prejuicio', 'Jane Austen', 'Historia de amor entre Elizabeth Bennet y Mr. Darcy');
+-- Insertar libros iniciales
+INSERT INTO libro (titulo, autor, descripcion, ruta_imagen) VALUES
+('Fundación', 'Isaac Asimov', 'Saga sobre la caída de un imperio galáctico', 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1417900846i/29579.jpg'),
+('El Hobbit', 'J.R.R. Tolkien', 'Aventura de Bilbo Bolsón en la Tierra Media', 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1546071216i/5907.jpg'),
+('Orgullo y Prejuicio', 'Jane Austen', 'Historia de amor entre Elizabeth Bennet y Mr. Darcy', 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1320399351i/1885.jpg');
 
 INSERT INTO libro_genero (id_libro, id_genero, prioridad) VALUES
 (1, 1, 1), -- Fundación - Ciencia Ficción (principal)
@@ -49,32 +59,6 @@ INSERT INTO libro_genero (id_libro, id_genero, prioridad) VALUES
 (2, 2, 1), -- El Hobbit - Fantasía (principal)
 (3, 3, 1), -- Orgullo y Prejuicio - Romance (principal)
 (3, 4, 2); -- Orgullo y Prejuicio - Misterio (secundario)
-
--- Consultas de ejemplo
--- Libros con sus géneros y prioridad
-SELECT 
-    l.titulo,
-    l.autor,
-    g.nombre_genero,
-    lg.prioridad
-FROM libro l
-JOIN libro_genero lg ON l.id_libro = lg.id_libro
-JOIN genero g ON lg.id_genero = g.id_genero
-ORDER BY l.titulo, lg.prioridad;
-
--- Géneros principales de cada libro
-SELECT 
-    l.titulo,
-    l.autor,
-    g.nombre_genero as genero_principal
-FROM libro l
-JOIN libro_genero lg ON l.id_libro = lg.id_libro
-JOIN genero g ON lg.id_genero = g.id_genero
-WHERE lg.prioridad = 1;
-
-
---Agregar 20 nuevos libros preexistentes:
-
 
 -- Insertar 20 nuevos libros con URLs reales de portadas
 INSERT INTO libro (titulo, autor, descripcion, ruta_imagen) VALUES
@@ -161,45 +145,31 @@ INSERT INTO libro_genero (id_libro, id_genero, prioridad) VALUES
 -- Neuromante - Ciencia Ficción (1) principal, Misterio (4) secundario
 (23, 1, 1), (23, 4, 2);
 
+-- Insertar usuarios de ejemplo
+INSERT INTO login (nombre, usuario, contraseña, correo) VALUES
+('Administrador Principal', 'admin', '1234', 'admin@biblioteca.com'),
+('Juan Pérez', 'juan', 'juan123', 'juan@email.com'),
+('María García', 'maria', 'maria456', 'maria@email.com'),
+('Carlos López', 'carlos', 'carlos789', 'carlos@email.com');
 
---COSIGO PARA PODER VER TODOS LOS LIBROS  
-    <div class="container">
-        <div class="welcome-text">
-            <h3>Libros principales</h3>
-        </div>
-    </div>
-    
-    <!-- SECCIÓN DE LIBROS -->
-    <div class="grid">
-        <?php
-        if ($result && $result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $parametros = 
-                "id_libro=" . $row['id_libro'] .
-                "&titulo=" . $row['titulo'] . 
-                "&autor=" . $row['autor'] . 
-                "&descripcion=" . $row['descripcion'] . 
-                "&ruta_imagen=" . $row['ruta_imagen'];
-                
-                echo "<a href='modal.php?$parametros' class='card'>";
-                echo "<div class='card-icon'>";
-                echo "<img src='" . $row['ruta_imagen'] . "' alt='" . $row['titulo'] . "'>";
-                echo "</div>";
-                echo "<h2>" . $row['titulo'] . "</h2>";
-                echo "<p class='autor'>" . $row['autor'] . "</p>";
-                echo "</a>";
-            }
-        } else {
-            echo "<p style='text-align: center; color: #fff;'>No se encontraron libros en la base de datos.</p>";
-        }
-        ?>
-    </div>
+-- Consultas de ejemplo
+-- Libros con sus géneros y prioridad
+SELECT 
+    l.titulo,
+    l.autor,
+    g.nombre_genero,
+    lg.prioridad
+FROM libro l
+JOIN libro_genero lg ON l.id_libro = lg.id_libro
+JOIN genero g ON lg.id_genero = g.id_genero
+ORDER BY l.titulo, lg.prioridad;
 
-
-
-                    <div class="form-group">
-                    <label class="form-label">Género Principal (No editable)</label>
-                    <!-- Usamos input text en lugar de select para mostrarlo fijo -->
-                    <input type="text" class="form-input" name="genero" 
-                           value="<?php echo htmlspecialchars($genero); ?>" readonly>
-                </div>
+-- Géneros principales de cada libro
+SELECT 
+    l.titulo,
+    l.autor,
+    g.nombre_genero as genero_principal
+FROM libro l
+JOIN libro_genero lg ON l.id_libro = lg.id_libro
+JOIN genero g ON lg.id_genero = g.id_genero
+WHERE lg.prioridad = 1;

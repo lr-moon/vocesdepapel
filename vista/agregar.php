@@ -1,4 +1,16 @@
 <?php
+session_start();
+
+// Evitar que el navegador guarde la página en caché
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+if(!isset($_SESSION['id']) || !isset($_SESSION['usuario'])){
+    header("Location: login.php");
+    exit();
+}
+
 // Conexión a la base de datos - ruta corregida
 include('../controlador/conexion.php');
 
@@ -29,6 +41,49 @@ define('IMAGEN_POR_DEFECTO', 'images/no_found.png');
     <title>Agregar Nuevo Libro - Administración</title>
     <link rel="icon" type="image/png" href="images/favicon.ico"> 
     <link rel="stylesheet" href="style.css/agregar.css">
+    <style>
+        /* BOTÓN DE CERRAR SESIÓN */
+        .btn-cerrar-sesion {
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .btn-cerrar-sesion:hover {
+            background: rgba(231, 76, 60, 0.9);
+            border-color: #c0392b;
+        }
+
+        .btn-cerrar-sesion svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            margin-right: 6px;
+        }
+
+        /* Ajustar el header para que tenga espacio para ambos botones */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -44,10 +99,16 @@ define('IMAGEN_POR_DEFECTO', 'images/no_found.png');
             </svg>
             Panel Admin
         </div>
-        <a href="admin_login.php" class="btn-glass">
-            <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
-            Cancelar
-        </a>
+        <div class="header-buttons">
+            <a href="admin_login.php" class="btn-glass">
+                <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                Cancelar
+            </a>
+            <a href="cerrar.php" class="btn-cerrar-sesion">
+                <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                Cerrar Sesión
+            </a>
+        </div>
     </header>
 
     <!-- CONTENIDO PRINCIPAL -->

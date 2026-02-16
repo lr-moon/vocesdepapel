@@ -1,5 +1,12 @@
 <?php
-// Seleccionar todos los libros con su género principal (prioridad 1)
+session_start();
+if(!isset($_SESSION['id']) || !isset($_SESSION['usuario'])){
+    header("Location: login.php");
+    exit();
+}
+?>
+<?php
+// Seleccionar todos los libros con su género principal (prioridad 1
 include ('../controlador/conexion.php');
 
 $sql = "SELECT 
@@ -384,7 +391,7 @@ if ($result_generos->num_rows > 0) {
         <div class="contenedor-principal">
             
             <div class="acciones-admin">
-                <a href="../index.html" class="boton-cerrar-sesion">
+                <a href="../vista/cerrar.php" class="boton-cerrar-sesion">
                     <svg viewBox="0 0 24 24"><path d="M10.09 15.59L11.5 17l5-5-5-5-1.41 1.41L12.67 11H3v2h9.67l-2.58 2.59zM19 3H5c-1.11 0-2 .9-2 2v4h2V5h14v14H5v-4H3v4c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
                     Cerrar Sesión
                 </a>
@@ -493,8 +500,6 @@ if ($result_generos->num_rows > 0) {
                 const tarjetaGeneroId = tarjeta.getAttribute('data-id-genero');
                 
                 if (!generoId || generoId === tarjetaGeneroId) {
-                    tarjeta.style.display = 'block'; // Usamos block porque el css original de tarjeta es flex, pero el padre es grid. Esto puede romper la grid visualmente si no se tiene cuidado, pero es lo estándar. Mejor sería quitar el display none.
-                    // Ajuste para grid:
                     tarjeta.style.display = 'flex'; 
                 } else {
                     tarjeta.style.display = 'none';
