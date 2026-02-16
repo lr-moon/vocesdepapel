@@ -125,3 +125,35 @@ p.subtitle {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(232, 154, 60, 0.3);
 }
+/* --- BOTONES EN LA ESQUINA --- */
+.corner-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 4; /* Por encima del contenido principal */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.btn-corner {
+    background: rgba(0, 0, 0, 0.5);
+    color: #ecf0f1;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.btn-corner:hover {
+    background: rgba(230, 126, 34, 0.8);
+    border-color: #e67e22;
+    transform: translateX(-5px);
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+}

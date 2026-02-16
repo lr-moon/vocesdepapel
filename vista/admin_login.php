@@ -413,7 +413,7 @@ if ($result_generos->num_rows > 0) {
             </div>
             
             
-            <h1>Administración</h1>
+            <h1>Administración - Administrador <strong><?php echo $_SESSION['nombre'];?></strong> </h1>
             <p class="subtitulo">Gestiona el catálogo y los recursos de la biblioteca.</p>
             
             <div class="filtro-genero">
