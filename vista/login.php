@@ -4,45 +4,23 @@ ini_set('display_errors', 1);
 session_start();
 include('../controlador/conexion.php');
 
-// Inicializar la variable de error
 $error = "";
 
-// Procesar el formulario si se envió
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitizar entradas
     $username = trim($_POST['username']);
     $password = trim($_POST['password']);
     
-    echo "Usuario ingresado: " . $username . "<br>";
-    echo "Contraseña ingresada: " . $password . "<br>";
-    
-    // Consulta SQL para validar credenciales en la base de datos
     $sqlverificando = "SELECT * FROM login WHERE usuario = '".$username."' AND contraseña = '".$password."'";
-    echo "Query: " . $sqlverificando . "<br>";
-    
     $QueryResult = mysqli_query($conn, $sqlverificando);
     
-    if(!$QueryResult){
-        echo "Error en la consulta: " . mysqli_error($conn) . "<br>";
-    }
-    
     if($row = mysqli_fetch_assoc($QueryResult)){
-        echo "Usuario encontrado: <br>";
-        print_r($row);
-        
-        // Guardar datos en sesión
         $_SESSION['nombre'] = $row['nombre'];
         $_SESSION['usuario'] = $row['usuario'];
         $_SESSION['correo'] = $row['correo'];
         $_SESSION['id'] = $row['id'];
-        
-        echo "<br>Redirigiendo...";
-        // Redirigir al panel de administración
         header("Location: admin_login.php");
         exit();
     } else {
-        echo "No se encontró el usuario<br>";
-        echo "Número de filas: " . mysqli_num_rows($QueryResult);
         $error = "Usuario o contraseña incorrectos";
     }
 }
@@ -74,36 +52,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php endif; ?>
         
         <form id="loginForm" method="POST" action="">
-            
             <div class="input-group">
                 <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" class="input-field" placeholder="Ingresa tu usuario" 
-                    required> 
+                <input type="text" id="username" name="username" class="input-field" 
+                       placeholder="Ingresa tu usuario" required> 
             </div>
 
             <div class="input-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" class="input-field" placeholder="Ingresa tu contraseña" 
-                    required>
+                <input type="password" id="password" name="password" class="input-field" 
+                       placeholder="Ingresa tu contraseña" required>
             </div>
 
             <button type="submit" class="btn-login">Entrar</button>
-
         </form>
 
-        <!-- Separador -->
-        <div class="separator">
-            <span>O</span>
-        </div>
+        <div class="separator"><span>O</span></div>
 
-        <!-- Botones de redes sociales estilo Pinterest -->
         <div class="social-buttons">
-            <button class="btn-social btn-facebook" type="button">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="white"/>
-                </svg>
-                Continue with Facebook
-            </button>
+
+            <!-- BOTÓN OFICIAL DE FACEBOOK -->
+            <fb:login-button
+                scope="public_profile,email"
+                onlogin="checkLoginState();">
+            </fb:login-button>
             
             <button class="btn-social btn-google" type="button">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -133,6 +105,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <a href="generos.php" class="btn-back">← Volver a la Biblioteca</a>
     </div>
+
+    <!-- SDK DE FACEBOOK -->
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId   : '1997754521623764',
+          cookie  : true,
+          xfbml   : true,
+          version : 'v22.0'
+        });
+
+        FB.AppEvents.logPageView();
+
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      };
+
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
+      function statusChangeCallback(response) {
+        if (response.status === 'connected') {
+          obtenerDatosUsuario(response.authResponse.accessToken);
+        }
+      }
+
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+
+      function obtenerDatosUsuario(accessToken) {
+        FB.api('/me', {fields: 'name,email'}, function(data) {
+          if (data.error) return;
+          window.location.href = '../controlador/facebook_callback.php'
+            + '?nombre=' + encodeURIComponent(data.name)
+            + '&email='  + encodeURIComponent(data.email)
+            + '&token='  + encodeURIComponent(accessToken);
+        });
+      }
+    </script>
 
 </body>
 </html>
