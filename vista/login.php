@@ -32,7 +32,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Administrador</title>
     <link rel="icon" type="image/png" href="images/favicon.ico"> 
-    <link rel="stylesheet" href="style.css/login.css"> 
+    <link rel="stylesheet" href="style.css/login.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
@@ -71,21 +73,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="social-buttons">
 
-            <!-- BOTÓN OFICIAL DE FACEBOOK -->
-            <fb:login-button
-                scope="public_profile,email"
-                onlogin="checkLoginState();">
-            </fb:login-button>
-            
-            <button class="btn-social btn-google" type="button">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                </svg>
-                Continue with Google
-            </button>
+            <!-- BOTÓN DE GOOGLE (Google Identity Services) -->
+            <div id="g_id_onload"
+                 data-client_id="920499853013-6088qibkgup634bbfu7kl2v70o8m2a1b.apps.googleusercontent.com"
+                 data-callback="handleGoogleLogin"
+                 data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-size="large"
+                 data-theme="outline"
+                 data-text="continue_with"
+                 data-shape="rectangular"
+                 data-logo_alignment="left"
+                 data-width="300">
+            </div>
 
             <button class="btn-social btn-instagram" type="button">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -106,51 +108,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="generos.php" class="btn-back">← Volver a la Biblioteca</a>
     </div>
 
-    <!-- SDK DE FACEBOOK -->
+    <!-- GOOGLE LOGIN CALLBACK -->
     <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId   : '1997754521623764',
-          cookie  : true,
-          xfbml   : true,
-          version : 'v22.0'
-        });
-
-        FB.AppEvents.logPageView();
-
-        FB.getLoginStatus(function(response) {
-          statusChangeCallback(response);
-        });
-      };
-
-      (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-
-      function statusChangeCallback(response) {
-        if (response.status === 'connected') {
-          obtenerDatosUsuario(response.authResponse.accessToken);
-        }
-      }
-
-      function checkLoginState() {
-        FB.getLoginStatus(function(response) {
-          statusChangeCallback(response);
-        });
-      }
-
-      function obtenerDatosUsuario(accessToken) {
-        FB.api('/me', {fields: 'name,email'}, function(data) {
-          if (data.error) return;
-          window.location.href = '../controlador/facebook_callback.php'
-            + '?nombre=' + encodeURIComponent(data.name)
-            + '&email='  + encodeURIComponent(data.email)
-            + '&token='  + encodeURIComponent(accessToken);
-        });
+      function handleGoogleLogin(response) {
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '../controlador/google_callback.php';
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'credential';
+        input.value = response.credential;
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
       }
     </script>
 
